@@ -10,7 +10,7 @@
     // Path to the directory that holds the heavyweight files (i.e. the
     // raw DICOM instances). Backslashes must be either escaped by
     // doubling them, or replaced by forward slashes "/".
-    "StorageDirectory" : "/var/lib/orthanc/db",
+    "StorageDirectory" : "/home/qa-midrc/orthanc/",
   
     // Path to the directory that holds the SQLite index (if unset, the
     // value of StorageDirectory is used). This index could be stored on
@@ -27,10 +27,10 @@
     // set, Orthanc will use the default temporary folder of the
     // operating system (such as "/tmp/" on UNIX-like systems, or
     // "C:/Temp" on Microsoft Windows).
-    "TemporaryDirectory" : "/home/qa-midrc/Orthanc/",
+    //"TemporaryDirectory" : "/home/qa-midrc/Orthanc/",
   
     // Enable the transparent compression of the DICOM instances
-    "StorageCompression" : false,
+    "StorageCompression" : true,
   
     // Maximum size of the storage in MB (a value of "0" indicates no
     // limit on the storage size)
