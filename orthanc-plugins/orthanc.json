@@ -27,7 +27,7 @@
     // set, Orthanc will use the default temporary folder of the
     // operating system (such as "/tmp/" on UNIX-like systems, or
     // "C:/Temp" on Microsoft Windows).
-    // "TemporaryDirectory" : "/tmp/Orthanc/",
+    "TemporaryDirectory" : "/tmp/Orthanc/",
   
     // Enable the transparent compression of the DICOM instances
     "StorageCompression" : false,
@@ -865,6 +865,6 @@
     // is a distributed network storage (e.g object storage plugin).
     // (new experimental feature in Orthanc 1.10.0)
     "ZipLoaderThreads": 1
-    
+
   }
   
