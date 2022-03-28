@@ -27,7 +27,7 @@
     // set, Orthanc will use the default temporary folder of the
     // operating system (such as "/tmp/" on UNIX-like systems, or
     // "C:/Temp" on Microsoft Windows).
-    "TemporaryDirectory" : "/tmp/Orthanc/",
+    "TemporaryDirectory" : "/home/qa-midrc/Orthanc/",
   
     // Enable the transparent compression of the DICOM instances
     "StorageCompression" : false,
