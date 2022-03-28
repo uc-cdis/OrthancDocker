@@ -698,7 +698,7 @@
     // is specified). This option should be set to "false" if multiple
     // Orthanc servers are using the same database (e.g. if PostgreSQL
     // or MariaDB/MySQL is used).
-    "SaveJobs" : true,
+    "SaveJobs" : false,
   
     // Specifies how Orthanc reacts when it receives a DICOM instance
     // whose SOPInstanceUID is already stored. If set to "true", the new
