@@ -1,5 +1,6 @@
 FROM jodogne/orthanc
 
+COPY orthanc.json /etc/orthanc/orthanc.json
 MAINTAINER Sebastien Jodogne <s.jodogne@gmail.com>
 LABEL Description="Orthanc, free DICOM server, with plugins" Vendor="The Orthanc project"
 
