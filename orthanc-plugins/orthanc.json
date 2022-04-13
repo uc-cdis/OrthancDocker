@@ -864,8 +864,6 @@
     // (default behaviour).  A value > 1 is meaningful only if the storage
     // is a distributed network storage (e.g object storage plugin).
     // (new experimental feature in Orthanc 1.10.0)
-    "ZipLoaderThreads": 0,
-
-    "IndexConnectionsCount": 5
+    "ZipLoaderThreads": 0
   }
   
