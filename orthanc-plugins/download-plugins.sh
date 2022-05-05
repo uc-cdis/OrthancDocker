@@ -12,6 +12,7 @@ VERSION_INDEXER=mainline
 VERSION_MYSQL=mainline
 VERSION_ODBC=mainline
 VERSION_POSTGRESQL=mainline
+VERSION_PYTHON=debian-bullseye-python-3.9/mainline
 VERSION_TCIA=mainline
 VERSION_TRANSFERS=mainline
 VERSION_WEB_VIEWER=mainline
@@ -31,6 +32,8 @@ wget ${URL}/plugin-dicom-web/${VERSION_DICOM_WEB}/libOrthancDicomWeb.so
 wget ${URL}/plugin-postgresql/${VERSION_POSTGRESQL}/UnitTests -O - > UnitTests-PostgreSQL
 wget ${URL}/plugin-postgresql/${VERSION_POSTGRESQL}/libOrthancPostgreSQLIndex.so
 wget ${URL}/plugin-postgresql/${VERSION_POSTGRESQL}/libOrthancPostgreSQLStorage.so
+
+wget ${URL}/plugin-python/${VERSION_PYTHON}/libOrthancPython.so
 
 wget ${URL}/plugin-mysql/${VERSION_MYSQL}/UnitTests -O - > UnitTests-MySQL
 wget ${URL}/plugin-mysql/${VERSION_MYSQL}/libOrthancMySQLIndex.so
@@ -100,6 +103,7 @@ mv ./OrthancWSIDicomizer               /usr/local/bin/
 mv ./libOrthancDicomWeb.so             /usr/local/share/orthanc/plugins/
 mv ./libOrthancPostgreSQLIndex.so      /usr/local/share/orthanc/plugins/
 mv ./libOrthancPostgreSQLStorage.so    /usr/local/share/orthanc/plugins/
+mv ./libOrthancPython.so               /usr/local/share/orthanc/plugins/
 mv ./libOrthancMySQLIndex.so           /usr/local/share/orthanc/plugins/
 mv ./libOrthancMySQLStorage.so         /usr/local/share/orthanc/plugins/
 mv ./libOrthancOdbcIndex.so            /usr/local/share/orthanc/plugins/
