@@ -1,20 +1,24 @@
 """
 TODO:
-- we are checking access to studies atm, and not access to projects, because we don't know which project a study belongs to. This causes duplicate authz information in the user.yaml. We could query peregrine? if the user can see the study in peregrine, then they have "read" access.
-- replace viewer error message "Failed to retrieve study data" with a message about access.
-- fix for anonymous users to access public data (arborist error: "auth request missing auth header").
-- 1 second cache for arborist requests? accessing /dicom-server creates many requests to arborist, for each JS/CSS file.
-- this is causing "failed csrf check" error for the server upload page.
+- We are checking access to studies atm, and not access to projects, because we
+don't know which project a study belongs to. This causes duplicate authz
+information in the user.yaml. Kind of hacky option: we could query peregrine -
+if the user can see the study in peregrine, then they have "read" access to
+the project. Or we could query the sheepdog DB directly.
+- When using the Orthanc UI to upload files, this plugin is causing a "failed
+csrf check" error. But we can still upload using the API.
 """
 
 
+from cachelib import SimpleCache
 from cdislogging import get_logger
 from gen3authz.client.arborist.client import ArboristClient
 import orthanc
 
 
-logger = get_logger("authz-filter", log_level="debug")
-arborist_client = ArboristClient(logger=logger)
+# Cache the access for 1 second so that we don't make multiple requests to
+# Arborist when a user accesses a webpage and fetches multiple JS/CSS files.
+ACCESS_CACHE = SimpleCache(default_timeout=1)
 
 
 def get_user_jwt(request):
@@ -27,6 +31,25 @@ def get_user_jwt(request):
         user_jwt_parts = request.get("headers", {}).get("authorization", "").split(" ")
         user_jwt = user_jwt_parts[1] if len(user_jwt_parts) > 1 else None
     return user_jwt
+
+
+def authorize_user(jwt, service, method, resource):
+    """
+    Return True if the user is authorized to access the resource, False
+    otherwise. If the access is not already cached, ask Arborist.
+    """
+    cache_key = f"{jwt}_{method}_{resource}"
+    if ACCESS_CACHE.has(cache_key):
+        authorized = ACCESS_CACHE.get(cache_key)
+    else:
+        authorized = arborist_client.auth_request(
+            jwt=jwt,
+            service=service,
+            methods=[method],
+            resources=[resource],
+        )
+        ACCESS_CACHE.set(cache_key, authorized)
+    return authorized
 
 
 def check_authorization(uri, **request):
@@ -51,11 +74,11 @@ def check_authorization(uri, **request):
         resource = "/services/dicom-viewer"
         method = "write"
 
-    authorized = arborist_client.auth_request(
+    authorized = authorize_user(
         jwt=get_user_jwt(request),
         service=service,
-        methods=[method],
-        resources=[resource],
+        method=method,
+        resource=resource,
     )
     if not authorized:
         logger.error(
@@ -63,6 +86,9 @@ def check_authorization(uri, **request):
         )
     return authorized
 
+
+logger = get_logger("authz-filter", log_level="debug")
+arborist_client = ArboristClient(logger=logger)
 
 logger.info("Registering Python plugin authorization filter")
 orthanc.RegisterIncomingHttpRequestFilter(check_authorization)
