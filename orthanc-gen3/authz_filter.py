@@ -72,7 +72,7 @@ def check_authorization(uri, **request):
     else:
         logger.debug(f"By default, admin access is required to access {uri}")
         resource = "/services/dicom-viewer"
-        method = "write"
+        method = "create"
 
     authorized = authorize_user(
         jwt=get_user_jwt(request),
