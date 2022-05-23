@@ -7,8 +7,8 @@ jobs:
     name: Build and push image
     uses: uc-cdis/.github/.github/workflows/image_build_push.yaml@master
     with:
-      DOCKERFILE_LOCATION: "./orthanc-plugins/Dockerfile"
-      DOCKERFILE_BUILD_CONTEXT: "./orthanc-plugins"
+      DOCKERFILE_LOCATION: "./orthanc-gen3/Dockerfile"
+      DOCKERFILE_BUILD_CONTEXT: "./orthanc-gen3"
       OVERRIDE_REPO_NAME: "gen3-orthanc"
     secrets:
       ECR_AWS_ACCESS_KEY_ID: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
