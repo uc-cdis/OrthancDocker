@@ -60,6 +60,10 @@ def check_authorization(uri, **request):
     resource = ""
     method = ""
 
+    if uri == "/system":  # endpoint used by k8s healthcheck probes
+        logger.debug("Accessing /system")
+        return True
+
     if uri.startswith("/dicom-web/studies/"):
         try:
             study_id = uri.split("/")[3]
