@@ -64,7 +64,10 @@ def check_authorization(uri, **request):
         logger.debug("Accessing /system")
         return True
 
-    if uri.startswith("/dicom-web/studies/") or uri == "/dicom-web/studies":
+    if uri == "/dicom-web/studies":
+        resource = "/services/dicom-viewer/studies"
+        method = "read"
+    elif uri.startswith("/dicom-web/studies/"):
         try:
             study_id = uri.split("/")[3]
         except IndexError:
