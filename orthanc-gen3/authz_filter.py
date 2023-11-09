@@ -64,14 +64,21 @@ def check_authorization(uri, **request):
         logger.debug("Accessing /system")
         return True
 
-    if uri.startswith("/dicom-web/studies/"):
-        try:
-            study_id = uri.split("/")[3]
-        except IndexError:
-            logger.error(f"Unable to parse study ID from URI: {uri}. Denying access")
-            return False
-        logger.debug(f"User accessing study: {study_id} (URI: {uri})")
-        resource = f"/services/dicom-viewer/studies/{study_id}"
+    if uri == "/dicom-web/studies" or uri.startswith("/dicom-web/studies/"):
+        study_id = None
+        if uri == "/dicom-web/studies":  # Ohif viewer V3
+            study_id = request.get("get", {}).get("StudyInstanceUID")
+        else:  # Ohif viewer V2 and V3
+            try:
+                study_id = uri.split("/")[3]
+            except IndexError:
+                logger.error(f"Unable to parse study ID from URI: {uri}. Denying access")
+                return False
+        if study_id:
+            logger.debug(f"User accessing study: {study_id} (URI: {uri})")
+            resource = f"/services/dicom-viewer/studies/{study_id}"
+        else:
+            resource = "/services/dicom-viewer/studies"
         method = "read"
     else:
         logger.debug(f"By default, admin access is required to access {uri}")
